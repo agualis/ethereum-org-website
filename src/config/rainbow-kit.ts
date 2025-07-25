@@ -9,37 +9,23 @@ import {
   zerionWallet,
 } from "@rainbow-me/rainbowkit/wallets"
 
-import { mockWallet } from "../../tests/e2e/fixtures/mockWallet"
-
-const walletGroups = [
-  {
-    groupName: "New to crypto",
-    wallets: [
-      coinbaseWallet,
-      rainbowWallet,
-      metaMaskWallet,
-      zerionWallet,
-      oneKeyWallet,
-      walletConnectWallet,
-    ],
-  },
-]
-
-const isLocalhost =
-  typeof window !== "undefined" && window.location.hostname === "localhost"
-
-// Add mock wallet only when running on localhost
-if (isLocalhost) {
-  walletGroups.push({
-    groupName: "Test",
-    wallets: [mockWallet],
-  })
-}
-
-export const rainbowkitConfig = getDefaultConfig({
+export const rainbowKitConfigParams = {
   appName: "ethereum.org",
   projectId: process.env.NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID!,
-  chains: [mainnet],
-  wallets: walletGroups,
-  ssr: isLocalhost,
-})
+  chains: [mainnet] as const,
+  wallets: [
+    {
+      groupName: "New to crypto",
+      wallets: [
+        coinbaseWallet,
+        rainbowWallet,
+        metaMaskWallet,
+        zerionWallet,
+        oneKeyWallet,
+        walletConnectWallet,
+      ],
+    },
+  ],
+}
+
+export const rainbowkitConfig = getDefaultConfig(rainbowKitConfigParams)

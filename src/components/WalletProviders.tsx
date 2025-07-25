@@ -1,6 +1,8 @@
 import { WagmiProvider } from "wagmi"
 import { type Locale, RainbowKitProvider } from "@rainbow-me/rainbowkit"
 
+import { rainbowkitTestConfig } from "../../tests/e2e/fixtures/rainbow-kit-test"
+
 import { rainbowkitConfig } from "@/config/rainbow-kit"
 
 interface WalletProvidersProps {
@@ -9,8 +11,13 @@ interface WalletProvidersProps {
 }
 
 const WalletProviders = ({ children, locale }: WalletProvidersProps) => {
+  const isLocalhost =
+    typeof window !== "undefined" && window.location.hostname === "localhost"
+
   return (
-    <WagmiProvider config={rainbowkitConfig}>
+    <WagmiProvider
+      config={isLocalhost ? rainbowkitTestConfig : rainbowkitConfig}
+    >
       <RainbowKitProvider
         locale={locale as Locale}
         appInfo={{
